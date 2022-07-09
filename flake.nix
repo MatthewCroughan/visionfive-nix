@@ -48,6 +48,8 @@
               #!${pkgs.expect}/bin/expect -f
               set timeout -1
               spawn ${pkgs.picocom}/bin/picocom [lindex $argv 0] -b 115200 -s "${pkgs.lrzsz}/bin/sz -X"
+              expect "Terminal ready"
+              send_user "\n### Apply power to the VisionFive Board ###\n"
               expect "bootloader"
               expect "DDR"
               send "\r"
