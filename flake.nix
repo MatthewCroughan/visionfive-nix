@@ -37,6 +37,10 @@
       overlay = final: prev: {
         linuxPackages_visionfive = final.linuxPackagesFor ((final.callPackage ./kernel.nix { inherit vendor-kernel; }).override { patches = []; });
       };
+      legacyPackages.${system} =
+        {
+          inherit (pkgs.pkgsCross.riscv64.linux) linuxPackages_visionfive;
+        };
       apps.${system} = {
         flashBootloader =
           let
