@@ -1,10 +1,5 @@
 { config, pkgs, lib, ... }:
 {
-  # Use the kernel from ./kernel.nix
-  boot.kernelPackages = let
-    linux_VisionFive = pkgs.callPackage ./kernel.nix { };
-  in lib.mkForce (pkgs.recurseIntoAttrs (pkgs.linuxPackagesFor linux_VisionFive));
-
   # Remove ZFS
   boot.supportedFilesystems = lib.mkForce [ "btrfs" "reiserfs" "vfat" "f2fs" "xfs" "ntfs" "cifs" "ext4" "vfat" ];
 

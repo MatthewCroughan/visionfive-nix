@@ -1,6 +1,10 @@
 {
   inputs = {
     nixpkgs.url = "github:matthewcroughan/nixpkgs/mc/visionfive-nix";
+    vendor-kernel = {
+      url = "github:starfive-tech/linux";
+      flake = false;
+    };
     jh7100_ddrinit = {
       url = "https://github.com/starfive-tech/JH7100_ddrinit/releases/download/ddrinit-2133-211102/ddrinit-2133-211102.bin.out";
       flake = false;
@@ -18,17 +22,21 @@
       flake = false;
     };
   };
-  outputs = { self, nixpkgs, jh71xx-tools, jh7100_recovery_binary, jh7100_secondBoot, jh7100_ddrinit }:
+  outputs = { self, nixpkgs, jh71xx-tools, jh7100_recovery_binary, jh7100_secondBoot, jh7100_ddrinit, vendor-kernel }:
     let
       system = "x86_64-linux";
-      pkgs = import nixpkgs { inherit system; };
+      pkgs = import nixpkgs { inherit system; overlays = [ self.overlay ]; };
       modules = [
+        { nixpkgs.overlays = [ self.overlay ]; }
         "${nixpkgs}/nixos/modules/installer/sd-card/sd-image-riscv64-visionfive-installer.nix"
         ./base.nix
         ./configuration.nix
       ];
     in
     {
+      overlay = final: prev: {
+        linuxPackages_visionfive = final.linuxPackagesFor ((final.callPackage ./kernel.nix { inherit vendor-kernel; }).override { patches = []; });
+      };
       apps.${system} = {
         flashBootloader =
           let

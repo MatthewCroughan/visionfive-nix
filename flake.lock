@@ -54,16 +54,16 @@
     },
     "nixpkgs": {
       "locked": {
-        "lastModified": 1652789813,
-        "narHash": "sha256-90QPw85Vl9+YWQpM/zRjb0/OYI+IODimC4LZufpCIh4=",
-        "owner": "Madouura",
+        "lastModified": 1657311595,
+        "narHash": "sha256-P/uhx5z7pW8OlpJzeShM7iBw7obrgv8CNLRP3G2xcG0=",
+        "owner": "matthewcroughan",
         "repo": "nixpkgs",
-        "rev": "aff8bd5ce0a12ee22402cd9bc6b3c437f0845345",
+        "rev": "6fd612ce3a656b1bcf5a1222c63294dcfcbb5361",
         "type": "github"
       },
       "original": {
-        "owner": "Madouura",
-        "ref": "dev/linux-riscv",
+        "owner": "matthewcroughan",
+        "ref": "mc/visionfive-nix",
         "repo": "nixpkgs",
         "type": "github"
       }
@@ -74,7 +74,24 @@
         "jh7100_recovery_binary": "jh7100_recovery_binary",
         "jh7100_secondBoot": "jh7100_secondBoot",
         "jh71xx-tools": "jh71xx-tools",
-        "nixpkgs": "nixpkgs"
+        "nixpkgs": "nixpkgs",
+        "vendor-kernel": "vendor-kernel"
+      }
+    },
+    "vendor-kernel": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1657015117,
+        "narHash": "sha256-WkJBcyAj1sDMZ8s/JqSAOV+CvXHwGYQrs9cLnOv0BkQ=",
+        "owner": "starfive-tech",
+        "repo": "linux",
+        "rev": "943858df470556d0b7f3b31fcc10931603f0f3cc",
+        "type": "github"
+      },
+      "original": {
+        "owner": "starfive-tech",
+        "repo": "linux",
+        "type": "github"
       }
     }
   },
