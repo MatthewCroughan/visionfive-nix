@@ -1,6 +1,6 @@
 {
   inputs = {
-    nixpkgs.url = "github:Madouura/nixpkgs/dev/linux-riscv";
+    nixpkgs.url = "github:matthewcroughan/nixpkgs/mc/visionfive-nix";
     jh7100_ddrinit = {
       url = "https://github.com/starfive-tech/JH7100_ddrinit/releases/download/ddrinit-2133-211102/ddrinit-2133-211102.bin.out";
       flake = false;
