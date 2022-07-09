@@ -20,7 +20,8 @@
   };
   outputs = { self, nixpkgs, jh71xx-tools, jh7100_recovery_binary, jh7100_secondBoot, jh7100_ddrinit }:
     let
-      pkgs = nixpkgs.legacyPackages.x86_64-linux;
+      system = "x86_64-linux";
+      pkgs = import nixpkgs { inherit system; };
       modules = [
         "${nixpkgs}/nixos/modules/installer/sd-card/sd-image-riscv64-visionfive-installer.nix"
         ./base.nix
@@ -28,7 +29,7 @@
       ];
     in
     {
-      apps.x86_64-linux = {
+      apps.${system} = {
         flashBootloader =
           let
             expectScript = pkgs.writeScript "expect-visionfive.sh" ''
@@ -69,7 +70,7 @@
               flash() {
                 (
                   set -x
-                  ${pkgs.lib.getExe self.packages.x86_64-linux.jh7100-recover} \
+                  ${pkgs.lib.getExe self.packages.${system}.jh7100-recover} \
                     -D $1 \
                     -r ${jh7100_recovery_binary} \
                     -b ${jh7100_secondBoot} \
@@ -90,16 +91,16 @@
             program = "${program}";
           };
         };
-      packages.x86_64-linux = {
+      packages.${system} = {
         jh7100-recover = pkgs.writeCBin "jh7100-recover" (builtins.readFile "${jh71xx-tools}/jh7100-recover.c");
       };
       images = {
-        visionfive-cross-x86 = self.nixosConfigurations.visionfive-cross-x86.config.system.build.sdImage;
-        visionfive-native = self.nixosConfigurations.visionfive-cross-x86.config.system.build.sdImage;
+        visionfive-cross = self.nixosConfigurations.visionfive-cross.config.system.build.sdImage;
+        visionfive-native = self.nixosConfigurations.visionfive-native.config.system.build.sdImage;
       };
       nixosConfigurations = {
-        visionfive-cross-x86 = nixpkgs.lib.nixosSystem {
-          system = "x86_64-linux";
+        visionfive-cross = nixpkgs.lib.nixosSystem {
+          system = "${system}";
           modules = modules ++ [
             {
               nixpkgs.crossSystem = {
