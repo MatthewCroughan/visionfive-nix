@@ -80,23 +80,21 @@
           };
         flashOriginal =
           let
+            flashScript = pkgs.writeScript "jh7100-recover-visionfive.sh" ''
+              set -x
+              ${pkgs.lib.getExe self.packages.${system}.jh7100-recover} \
+                -D $1 \
+                -r ${jh7100_recovery_binary} \
+                -b ${jh7100_secondBoot} \
+                -d ${jh7100_ddrinit}
+            '';
             program = pkgs.writeShellScript "flash-visionfive.sh" ''
-              flash() {
-                (
-                  set -x
-                  ${pkgs.lib.getExe self.packages.${system}.jh7100-recover} \
-                    -D $1 \
-                    -r ${jh7100_recovery_binary} \
-                    -b ${jh7100_secondBoot} \
-                    -d ${jh7100_ddrinit}
-                )
-              }
               if $(groups | grep --quiet --word-regexp "dialout"); then
                 echo "User is in dialout group, flashing to board without sudo"
-                flash
+                ${flashScript} $1
               else
                 echo "User is not in dialout group, flashing to board with sudo"
-                sudo flash
+                sudo ${flashScript} $1
               fi
             '';
           in
