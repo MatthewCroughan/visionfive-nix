@@ -1,4 +1,8 @@
 {
+  imports = [
+    ./examples/launchCageOnBoot.nix
+  ];
+
 #  networking = {
 #    interfaces."wlan0".useDHCP = true;
 #    wireless = {
