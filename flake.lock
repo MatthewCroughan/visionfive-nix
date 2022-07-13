@@ -54,16 +54,16 @@
     },
     "nixpkgs": {
       "locked": {
-        "lastModified": 1657311595,
-        "narHash": "sha256-P/uhx5z7pW8OlpJzeShM7iBw7obrgv8CNLRP3G2xcG0=",
+        "lastModified": 1657645802,
+        "narHash": "sha256-wd+LiuGtHP8mTIc0gZrO2yqzmEPVvh5IyWrB8WCQNKM=",
         "owner": "matthewcroughan",
         "repo": "nixpkgs",
-        "rev": "6fd612ce3a656b1bcf5a1222c63294dcfcbb5361",
+        "rev": "39a827f18b870afb02f6c0f09151c69f2d8e7a4d",
         "type": "github"
       },
       "original": {
         "owner": "matthewcroughan",
-        "ref": "mc/visionfive-nix",
+        "ref": "mc/riscv-testing",
         "repo": "nixpkgs",
         "type": "github"
       }
@@ -81,11 +81,11 @@
     "vendor-kernel": {
       "flake": false,
       "locked": {
-        "lastModified": 1657015117,
-        "narHash": "sha256-WkJBcyAj1sDMZ8s/JqSAOV+CvXHwGYQrs9cLnOv0BkQ=",
+        "lastModified": 1657526524,
+        "narHash": "sha256-NiEeWgYzEhqLbvB0krpjoRv8oXXsJYp6KeDor+f9tak=",
         "owner": "starfive-tech",
         "repo": "linux",
-        "rev": "943858df470556d0b7f3b31fcc10931603f0f3cc",
+        "rev": "74003f14f92e3c8eb31536b599c1f0c7aba3cdf2",
         "type": "github"
       },
       "original": {
