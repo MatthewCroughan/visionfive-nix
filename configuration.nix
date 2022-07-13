@@ -26,5 +26,14 @@
 
   # Enable Avahi mDNS, you should be able to reach http://visionfive-nix:19999
   # to reach netdata when booted
-  services.avahi.enable = true;
+  services.avahi = {
+    openFirewall = true;
+    nssmdns = true; # Allows software to use Avahi to resolve.
+    enable = true;
+    publish = {
+      enable = true;
+      addresses = true;
+      workstation = true;
+    };
+  };
 }
