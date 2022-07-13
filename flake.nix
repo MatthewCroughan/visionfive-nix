@@ -1,6 +1,6 @@
 {
   inputs = {
-    nixpkgs.url = "github:matthewcroughan/nixpkgs/mc/visionfive-nix";
+    nixpkgs.url = "github:matthewcroughan/nixpkgs/mc/riscv-testing";
     vendor-kernel = {
       url = "github:starfive-tech/linux";
       flake = false;
