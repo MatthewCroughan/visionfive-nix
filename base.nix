@@ -18,11 +18,6 @@
     })
   ];
 
-  # Enable ssh on boot
-  services = {
-    openssh.enable = true;
-  };
-
   users = {
     users.default = {
       password = "visionfive-nix";
