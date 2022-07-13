@@ -27,6 +27,9 @@
     users.default = {
       password = "visionfive-nix";
       isNormalUser = true;
+      extraGroups = [
+        "wheel"
+      ];
     };
   };
 }
