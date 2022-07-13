@@ -2,13 +2,25 @@
 {
   hardware.opengl.enable = true;
   programs.sway.enable = true;
-  services.cage = {
-    enable = true;
+  systemd.user.services.sway = {
+    unitConfig = {
+      Description = "Sway - Wayland window manager";
+      Documentation = [ "man:sway(5)" ];
+      BindsTo = [ "graphical-session.target" ];
+      Wants = [ "graphical-session-pre.target" ];
+      After = [ "graphical-session-pre.target" ];
+    };
+    serviceConfig = {
+      Type = "simple";
+      ExecStart = "${pkgs.sway}/bin/sway";
+      Restart = "on-failure";
+      RestartSec = 1;
+      TimeoutStopSec = 10;
+    };
   };
-#  services.xserver = {
+#  services.cage = {
 #    enable = true;
-#    displayManager.sx.enable = true;
-#    desktopManager..enable = true;
+#    user = "default";
 #  };
   networking = {
     networkmanager.unmanaged = [ "wlan0" ];
