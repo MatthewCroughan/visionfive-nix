@@ -44,8 +44,9 @@
       flake = false;
     };
   };
-  outputs = { self, nixpkgs, jh71xx-tools, jh7100_recovery_binary, jh7100_secondBoot, jh7100_ddrinit, vendor-kernel }:
+  outputs = inputs@{ self, nixpkgs, jh71xx-tools, jh7100_recovery_binary, jh7100_secondBoot, jh7100_ddrinit, vendor-kernel, ... }:
     let
+      inherit (nixpkgs) lib;
       system = "x86_64-linux";
       pkgs = import nixpkgs { inherit system; overlays = [ self.overlay ]; };
       modules = [
@@ -54,6 +55,12 @@
         ./base.nix
         ./configuration.nix
       ];
+
+      # Pass arguments to a module inside a function inside a file, while preserving
+      # the file name behavior of the module system.
+      importApply =
+        modulePath: staticArgs:
+          lib.setDefaultModuleLocation modulePath (import modulePath staticArgs);
     in
     {
       overlay = final: prev: {
@@ -131,8 +138,23 @@
       images = {
         visionfive-cross = self.nixosConfigurations.visionfive-cross.config.system.build.sdImage;
         visionfive-native = self.nixosConfigurations.visionfive-native.config.system.build.sdImage;
+
+        visionfive2-cross = self.nixosConfigurations.visionfive2-cross.config.system.build.sdImage;
+        visionfive2-native = self.nixosConfigurations.visionfive2-native.config.system.build.sdImage;
       };
-      nixosConfigurations = {
+      nixosModules = {
+        visionfive2-sd-image = importApply ./visionfive2/sd-image.nix { inherit inputs importApply; };
+        visionfive2-kernel = importApply ./visionfive2/kernel/nixos-module.nix { inherit inputs importApply; };
+      };
+      nixosConfigurations =
+      let
+        visionfive2-example-modules = [
+          ./base.nix
+          ./configuration.nix
+          self.nixosModules.visionfive2-sd-image
+        ];
+      in
+      {
         visionfive-cross = nixpkgs.lib.nixosSystem {
           system = "${system}";
           modules = modules ++ [
@@ -146,6 +168,21 @@
         visionfive-native = nixpkgs.lib.nixosSystem {
           system = "riscv64-linux";
           modules = modules;
+        };
+
+        visionfive2-cross = nixpkgs.lib.nixosSystem {
+          system = "${system}";
+          modules = visionfive2-example-modules ++ [
+            {
+              nixpkgs.crossSystem = {
+                system = "riscv64-linux";
+              };
+            }
+          ];
+        };
+        visionfive2-native = nixpkgs.lib.nixosSystem {
+          system = "riscv64-linux";
+          modules = visionfive2-example-modules;
         };
       };
     };
