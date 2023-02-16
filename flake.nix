@@ -131,7 +131,7 @@
             type = "app";
             program = "${program}";
           };
-        };
+        } // import ./visionfive2/commands.nix { inherit inputs pkgs; };
       packages.${system} = {
         jh7100-recover = pkgs.writeCBin "jh7100-recover" (builtins.readFile "${jh71xx-tools}/jh7100-recover.c");
       };
