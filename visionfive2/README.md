@@ -1,7 +1,7 @@
 
 # VisionFive 2
 
-As of writing, VisionFive 2 support is quite experimental.
+As of writing, VisionFive 2 support is quite experimental; see [kernel/README.md](kernel/README.md).
 
 ## Flash the bootloader via serial connection
 
