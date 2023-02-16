@@ -1,4 +1,10 @@
-# Flashing the Bootloader
+# VisionFive-Nix
+
+This repository contains primarily instructions for the VisionFive 1 board.
+
+For experimental support for VisionFive 2, see [visionfive2/README.md](visionfive2/README.md).
+
+# Flashing the Bootloader (VisionFive 1)
 
 1. Do not apply power to the board
 2. Attach the board via serial to your system, ensuring power is still not applied
