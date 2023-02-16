@@ -36,6 +36,59 @@
         "url": "https://github.com/starfive-tech/JH7100_secondBoot/releases/download/bootloader-211102_VisionFive_JH7100/bootloader-JH7100-211102.bin.out"
       }
     },
+    "jh7110-kernel": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1673450975,
+        "narHash": "sha256-o1k1UDUXUsRb4200zZ5ozVL15g7wsheet8O5UhX2HWY=",
+        "owner": "starfive-tech",
+        "repo": "linux",
+        "rev": "59cf9af678dbfa3d73f6cb86ed1ae7219da9f5c9",
+        "type": "github"
+      },
+      "original": {
+        "owner": "starfive-tech",
+        "ref": "JH7110_VisionFive2_devel",
+        "repo": "linux",
+        "type": "github"
+      }
+    },
+    "jh7110_recovery_binary": {
+      "flake": false,
+      "locked": {
+        "narHash": "sha256-WL2ltlIJoWQFrRxEQNYQdzBBj0qv9FnMWLHVZVzWzBQ=",
+        "type": "file",
+        "url": "https://github.com/starfive-tech/Tools/blob/bc6dc7e33e0c2466db0476b5043f0f77842f98f0/recovery/jh7110-recovery-20221205.bin?raw=true"
+      },
+      "original": {
+        "type": "file",
+        "url": "https://github.com/starfive-tech/Tools/blob/bc6dc7e33e0c2466db0476b5043f0f77842f98f0/recovery/jh7110-recovery-20221205.bin?raw=true"
+      }
+    },
+    "jh7110_u-boot-bin": {
+      "flake": false,
+      "locked": {
+        "narHash": "sha256-DfB8HpWv+/i+fdGvF6oGVVgc+A+LV5NA8PZ1JSOSuys=",
+        "type": "file",
+        "url": "https://github.com/starfive-tech/VisionFive2/releases/download/VF2_v2.8.0/visionfive2_fw_payload.img"
+      },
+      "original": {
+        "type": "file",
+        "url": "https://github.com/starfive-tech/VisionFive2/releases/download/VF2_v2.8.0/visionfive2_fw_payload.img"
+      }
+    },
+    "jh7110_u-boot-spl-bin": {
+      "flake": false,
+      "locked": {
+        "narHash": "sha256-Mgw6YUn69MNvgZFd1WvamF0N1ZjF35km76i1AknaAT8=",
+        "type": "file",
+        "url": "https://github.com/starfive-tech/VisionFive2/releases/download/VF2_v2.8.0/u-boot-spl.bin.normal.out"
+      },
+      "original": {
+        "type": "file",
+        "url": "https://github.com/starfive-tech/VisionFive2/releases/download/VF2_v2.8.0/u-boot-spl.bin.normal.out"
+      }
+    },
     "jh71xx-tools": {
       "flake": false,
       "locked": {
@@ -73,6 +126,10 @@
         "jh7100_ddrinit": "jh7100_ddrinit",
         "jh7100_recovery_binary": "jh7100_recovery_binary",
         "jh7100_secondBoot": "jh7100_secondBoot",
+        "jh7110-kernel": "jh7110-kernel",
+        "jh7110_recovery_binary": "jh7110_recovery_binary",
+        "jh7110_u-boot-bin": "jh7110_u-boot-bin",
+        "jh7110_u-boot-spl-bin": "jh7110_u-boot-spl-bin",
         "jh71xx-tools": "jh71xx-tools",
         "nixpkgs": "nixpkgs",
         "vendor-kernel": "vendor-kernel"

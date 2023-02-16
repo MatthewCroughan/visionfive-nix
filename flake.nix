@@ -1,6 +1,8 @@
 {
   inputs = {
     nixpkgs.url = "github:matthewcroughan/nixpkgs/mc/riscv-testing";
+
+    # VisionFive ("v1")
     vendor-kernel = {
       url = "github:starfive-tech/linux";
       flake = false;
@@ -19,6 +21,26 @@
     };
     jh71xx-tools = {
       url = "github:xypron/jh71xx-tools";
+      flake = false;
+    };
+
+    # VisionFive 2
+    jh7110-kernel = {
+      # url = "github:starfive-tech/linux/50a831018ed997c9fb3b603574176b221a28aa12"; # JH7110_VisionFive2_devel via VisionFive2 project submodule about two revisions back.
+      url = "github:starfive-tech/linux/JH7110_VisionFive2_devel";
+      flake = false;
+    };
+    jh7110_recovery_binary = {
+      url = "https://github.com/starfive-tech/Tools/blob/bc6dc7e33e0c2466db0476b5043f0f77842f98f0/recovery/jh7110-recovery-20221205.bin?raw=true";
+       flake = false;
+     };
+    # Should be possible to build from https://github.com/starfive-tech/VisionFive2
+    jh7110_u-boot-spl-bin = {
+      url = https://github.com/starfive-tech/VisionFive2/releases/download/VF2_v2.8.0/u-boot-spl.bin.normal.out;
+      flake = false;
+    };
+    jh7110_u-boot-bin = {
+      url = https://github.com/starfive-tech/VisionFive2/releases/download/VF2_v2.8.0/visionfive2_fw_payload.img;
       flake = false;
     };
   };
