@@ -17,6 +17,8 @@
 
   networking.hostName = "visionfive-nix";
 
+  boot.kernelParams = [ "boot.shell_on_fail" ];
+
   # Enable ssh on boot
   services.openssh.enable = true;
 
