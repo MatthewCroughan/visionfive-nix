@@ -1,6 +1,8 @@
 {
   inputs = {
     nixpkgs.url = "github:matthewcroughan/nixpkgs/mc/riscv-testing";
+
+    # VisionFive ("v1")
     vendor-kernel = {
       url = "github:starfive-tech/linux";
       flake = false;
@@ -21,9 +23,30 @@
       url = "github:xypron/jh71xx-tools";
       flake = false;
     };
+
+    # VisionFive 2
+    jh7110-kernel = {
+      # url = "github:starfive-tech/linux/50a831018ed997c9fb3b603574176b221a28aa12"; # JH7110_VisionFive2_devel via VisionFive2 project submodule about two revisions back.
+      url = "github:starfive-tech/linux/JH7110_VisionFive2_devel";
+      flake = false;
+    };
+    jh7110_recovery_binary = {
+      url = "https://github.com/starfive-tech/Tools/blob/bc6dc7e33e0c2466db0476b5043f0f77842f98f0/recovery/jh7110-recovery-20221205.bin?raw=true";
+       flake = false;
+     };
+    # Should be possible to build from https://github.com/starfive-tech/VisionFive2
+    jh7110_u-boot-spl-bin = {
+      url = https://github.com/starfive-tech/VisionFive2/releases/download/VF2_v2.8.0/u-boot-spl.bin.normal.out;
+      flake = false;
+    };
+    jh7110_u-boot-bin = {
+      url = https://github.com/starfive-tech/VisionFive2/releases/download/VF2_v2.8.0/visionfive2_fw_payload.img;
+      flake = false;
+    };
   };
-  outputs = { self, nixpkgs, jh71xx-tools, jh7100_recovery_binary, jh7100_secondBoot, jh7100_ddrinit, vendor-kernel }:
+  outputs = inputs@{ self, nixpkgs, jh71xx-tools, jh7100_recovery_binary, jh7100_secondBoot, jh7100_ddrinit, vendor-kernel, ... }:
     let
+      inherit (nixpkgs) lib;
       system = "x86_64-linux";
       pkgs = import nixpkgs { inherit system; overlays = [ self.overlay ]; };
       modules = [
@@ -32,6 +55,12 @@
         ./base.nix
         ./configuration.nix
       ];
+
+      # Pass arguments to a module inside a function inside a file, while preserving
+      # the file name behavior of the module system.
+      importApply =
+        modulePath: staticArgs:
+          lib.setDefaultModuleLocation modulePath (import modulePath staticArgs);
     in
     {
       overlay = final: prev: {
@@ -102,15 +131,30 @@
             type = "app";
             program = "${program}";
           };
-        };
+        } // import ./visionfive2/commands.nix { inherit inputs pkgs; };
       packages.${system} = {
         jh7100-recover = pkgs.writeCBin "jh7100-recover" (builtins.readFile "${jh71xx-tools}/jh7100-recover.c");
       };
       images = {
         visionfive-cross = self.nixosConfigurations.visionfive-cross.config.system.build.sdImage;
         visionfive-native = self.nixosConfigurations.visionfive-native.config.system.build.sdImage;
+
+        visionfive2-cross = self.nixosConfigurations.visionfive2-cross.config.system.build.sdImage;
+        visionfive2-native = self.nixosConfigurations.visionfive2-native.config.system.build.sdImage;
       };
-      nixosConfigurations = {
+      nixosModules = {
+        visionfive2-sd-image = importApply ./visionfive2/sd-image.nix { inherit inputs importApply; };
+        visionfive2-kernel = importApply ./visionfive2/kernel/nixos-module.nix { inherit inputs importApply; };
+      };
+      nixosConfigurations =
+      let
+        visionfive2-example-modules = [
+          ./base.nix
+          ./configuration.nix
+          self.nixosModules.visionfive2-sd-image
+        ];
+      in
+      {
         visionfive-cross = nixpkgs.lib.nixosSystem {
           system = "${system}";
           modules = modules ++ [
@@ -124,6 +168,21 @@
         visionfive-native = nixpkgs.lib.nixosSystem {
           system = "riscv64-linux";
           modules = modules;
+        };
+
+        visionfive2-cross = nixpkgs.lib.nixosSystem {
+          system = "${system}";
+          modules = visionfive2-example-modules ++ [
+            {
+              nixpkgs.crossSystem = {
+                system = "riscv64-linux";
+              };
+            }
+          ];
+        };
+        visionfive2-native = nixpkgs.lib.nixosSystem {
+          system = "riscv64-linux";
+          modules = visionfive2-example-modules;
         };
       };
     };
